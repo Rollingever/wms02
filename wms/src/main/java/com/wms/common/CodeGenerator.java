@@ -45,7 +45,7 @@ public class CodeGenerator {
         AutoGenerator mpg = new AutoGenerator();
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        String projectPath = System.getProperty("user.dir");
+        String projectPath = System.getProperty("user.dir")+"/wms";
         gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("wms");
         gc.setOpen(false);
@@ -58,7 +58,7 @@ public class CodeGenerator {
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
         // ⼀、修改数据源
-        dsc.setUrl("jdbc:sqlserver://127.0.0.1:1433;databaseName=wms;encrypt=true;trustServerCertificate=true;sslProtocol=TLSv1.2");
+        dsc.setUrl("jdbc:sqlserver://127.0.0.1:1433;databaseName=wms02;encrypt=true;trustServerCertificate=true;sslProtocol=TLSv1.2");
                 // dsc.setSchemaName("public");
                 dsc.setDriverName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         dsc.setUsername("sa");
