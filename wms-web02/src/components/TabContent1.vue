@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>这是选项1的内容aaaaa</p>
+    <p>这是选项1的内容</p>
   </div>
 </template>
 
