@@ -1,9 +1,9 @@
 package com.wms.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
-
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -11,17 +11,16 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- *
+ * 
  * </p>
  *
  * @author wms
- * @since 2024-07-13
+ * @since 2024-08-03
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@ApiModel(value="User对象", description="")
-@TableName("[user]")  // 指定数据库表名为 [user]
-public class User implements Serializable {
+@ApiModel(value="Member对象", description="")
+public class Member implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -54,6 +53,7 @@ public class User implements Serializable {
     @TableField("isValid")
     private String isvalid;
 
-    @Version
-    private String version;
+    private Integer version;
+
+
 }
