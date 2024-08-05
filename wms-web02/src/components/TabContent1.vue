@@ -239,7 +239,7 @@ export default {
         this.form.id = row.id;
         this.form.no = row.no;
         this.form.name = row.name;
-        this.form.password = '';
+        this.form.password = row.password;
         this.form.age = row.age+'';
         this.form.sex = row.sex+'';
         this.form.phone = row.phone;

@@ -1,41 +1,30 @@
 <template>
-  <el-menu
-      background-color="#545c64"
-      text-color="#fff"
-      active-text-color="#ffd04b"
-      style="height: 100vh;"
-      default-active="/IndexPage/AppHome"
-      :collapse="isCollapse"
-      :collapse-transition="false"
-      router>
-    <el-menu-item index="/IndexPage/AppHome">
-      <i class="el-icon-s-home"></i>
-      <span slot="title">首页</span>
-    </el-menu-item>
-
-    <el-menu-item
-        v-for="(item, i) in menu"
-        :key="i"
-        :index="'/IndexPage/' + item.menuclick">
-      <i :class="item.menuicon"></i>
-      <span slot="title">{{ item.menuname }}</span>
-    </el-menu-item>
+  <el-menu :default-openeds="['1', '3']">
+    <el-menu-item @click="$emit('add-tab', 'AppHome', '个人中心')">个人中心</el-menu-item>
+    <el-submenu index="1">
+      <template slot="title"><i class="el-icon-message"></i>导航一</template>
+      <el-menu-item-group>
+        <el-menu-item @click="$emit('add-tab', 'TabContent1', '选项1')">选项1</el-menu-item>
+        <el-menu-item index="1-2" @click="$emit('add-tab', 'TabContent2', '选项2')">选项2</el-menu-item>
+      </el-menu-item-group>
+      <el-submenu index="1-4">
+        <template slot="title">选项3</template>
+        <el-menu-item index="1-4-1" @click="$emit('add-tab', 'TabContent4', '选项3-1')">选项4-1</el-menu-item>
+      </el-submenu>
+    </el-submenu>
+    <!-- 其他导航部分 -->
   </el-menu>
 </template>
 
 <script>
 export default {
   name: "AppAside",
-  props: {
-    isCollapse: Boolean,
-  },
-  computed: {
-    menu() {
-      return this.$store.getters.getMenu;
-    }
-  }
 };
 </script>
 
 <style scoped>
+.el-aside {
+  background-color: rgb(238, 241, 246);
+  color: #333;
+}
 </style>

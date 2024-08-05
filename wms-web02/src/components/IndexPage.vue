@@ -1,48 +1,26 @@
 <template>
   <el-container style="height: 790px; border: 1px solid #eee">
-    <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-      <el-menu :default-openeds="['1', '3']">
-        <!-- 导航和选项部分 -->
-        <el-submenu index="1">
-          <template slot="title"><i class="el-icon-message"></i>导航一</template>
-          <el-menu-item-group>
-            <el-menu-item  @click="addTab('TabContent1', '选项1')">选项1</el-menu-item>
-            <el-menu-item index="1-2" @click="addTab('TabContent2', '选项2')">选项2</el-menu-item>
-          </el-menu-item-group>
-          <el-submenu index="1-4">
-            <template slot="title">选项3</template>
-            <el-menu-item index="1-4-1" @click="addTab('TabContent4', '选项3-1')">选项4-1</el-menu-item>
-          </el-submenu>
-        </el-submenu>
-        <!-- 其他导航部分 -->
-      </el-menu>
-    </el-aside>
+    <el-header style="text-align: right; font-size: 12px">
+      <el-dropdown>
+        <span class="el-dropdown-link">
+        {{ userName }}<i class="el-icon-arrow-down" style="margin-left:20px"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </el-header>
 
     <el-container style="height: 100%;">
-      <el-header style="text-align: right; font-size: 12px">
-        <el-dropdown>
-          <i class="el-icon-setting" style="margin-right: 15px"></i>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>查看</el-dropdown-item>
-            <el-dropdown-item>新增</el-dropdown-item>
-            <el-dropdown-item>删除</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-        <span>王小虎</span>
-      </el-header>
+      <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+        <AppAside @add-tab="addTab"></AppAside>
+      </el-aside>
 
-      <el-main style="height: 100%;">
-        <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
-          <el-tab-pane
-              v-for="tab in editableTabs"
-              :key="tab.name"
-              :label="tab.title"
-              :name="tab.name"
-          >
-            <component :is="tab.component"></component>
-          </el-tab-pane>
-        </el-tabs>
-      </el-main>
+      <AppMain
+          :editableTabs="editableTabs"
+          :editableTabsValue.sync="editableTabsValue"
+          @remove-tab="removeTab"
+      ></AppMain>
     </el-container>
   </el-container>
 </template>
@@ -52,6 +30,7 @@
   background-color: #B3C0D1;
   color: #333;
   line-height: 60px;
+  width: 100%;
 }
 .el-main {
   padding: 5px;
@@ -62,34 +41,65 @@
 </style>
 
 <script>
-import TabContent1 from "@/components/TabContent1.vue";
-
+import AppAside from "@/components/AppAside.vue";
+import AppMain from "@/components/AppMain.vue";
 
 export default {
   name: "IndexPage",
   components: {
-    TabContent1,
+    AppMain,
+    AppAside,
 
   },
   data() {
+    let user = null;
+    try {
+      const userData = sessionStorage.getItem('CurUser');
+      user = userData ? JSON.parse(userData) : null;
+    } catch (e) {
+      console.error('从 sessionStorage 解析用户数据时出错', e);
+    }
     return {
+      user: user || {}, // 确保 user 属性始终被定义为一个对象
       editableTabsValue: '1',
       editableTabs: [
         {
-          title: 'Tab 1',
+          title: '个人中心',
           name: '1',
-          component: 'TabContent1'
+          component: 'AppHome'
         },
-        {
-          title: 'Tab 2',
-          name: '2',
-          component: 'TabContent2'
-        }
       ],
       tabIndex: 2
     }
   },
+  computed: {
+    userName() {
+      return this.user.name || 'Guest';
+    }
+  },
   methods: {
+    logout() {
+      console.log('logout');
+      this.$confirm('您确定要退出登录吗？','提示',{
+        type: 'warning',
+        confirmButtonText:'确定',
+        center: true
+      })
+          .then(()=>{
+            this.$message({
+              type: 'success',
+              message:'退出登录成功'
+            });
+            this.$router.push('/');
+            sessionStorage.clear();
+          })
+          .catch(()=>{
+            this.$message({
+              type: 'info',
+              message:'已取消退出登录'
+            });
+          });
+    },
     addTab(component, title) {
       let newTabName = ++this.tabIndex + '';
       this.editableTabs.push({
@@ -119,5 +129,3 @@ export default {
   }
 }
 </script>
-
-<!--测试一段-->
